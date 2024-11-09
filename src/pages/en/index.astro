@@ -1,18 +1,154 @@
 ---
 import BaseHead from '../../components/BaseHead.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
+
+import { Image } from 'astro:assets';
+import profilePicture from '../../images/retrato_retiro_the_fathers_house.png';
+import CopyButton from "../../components/CopyButton.astro";
+import Cont from "../../components/Container.astro";
+import Carousel from "../../components/Carousel.astro";
+
+const images_seek24 = Array.from(await Astro.glob('../../images/seek24/*.{jpg, jpeg, png}')).map(i => i.default);
+const images_semestre = Array.from(await Astro.glob('../../images/semestre/*.{jpg,jpeg,png}')).map(i => i.default);
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body class=`
-		flex flex-col gap-6
-		bg-gray-100 p-6
+<head>
+	<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+</head>
+<body class=`
+		flex flex-col gap-12
+		bg-white p-6 lg:p-12
+		max-w-4xl mx-auto
+		pb-24
 	`>
-		<h1>Hey, I'm Diego Hernandez</h1>
+<div class=`flex flex-col lg:flex-row gap-6 w-full`>
+	<Image src={profilePicture} alt="Profile photo" class=`
+				w-full lg:w-64
+				aspect-square lg:aspect-auto object-cover object-bottom
+			`/>
 
-	</body>
+	<div class=`flex flex-col gap-6`>
+		<h1>Heyy, I'm Diego Hernández</h1>
+
+		<p>A Catholic college student from Mexico who needs your help to live SEEK 2025.</p>
+
+		<button id="ctaButton" class=`p-6 bg-blue-600 text-white`>
+			Donate
+		</button>
+	</div>
+</div>
+
+<Cont asCallout={true}>
+	<h3>¿What's SEEK?</h3>
+	<p>
+		<a href="https://seek.focus.org/" target="_blank">SEEK</a> is the annual conference organized by <a href="https://focus.org/" target="_blank">FOCUS</a> every year to bring together thousands of Catholic university students for a week.
+	</p>
+</Cont>
+
+<Cont>
+	<h3>SEEK 2024</h3>
+
+	<p>
+		This is a bit of what we experienced last year at SEEK 2024.
+	</p>
+
+	<Carousel images={images_seek24} />
+</Cont>
+
+<Cont>
+	<h3>Fruits of last year</h3>
+
+	<p>
+		Thanks to the way God worked in my heart last year during SEEK 2024, I was able to receive the grace of:
+	</p>
+
+	<ul class="-mt-3">
+		<li>going through a vocational discernment process</li>
+		<li>being part of the board of the FOCUS student association at my university</li>
+		<li>attending a Bible study group and a discipleship group</li>
+		<li>leading a bible study group, participate in</li>
+	</ul>
+
+	<Carousel images={images_semestre} />
+</Cont>
+
+<!-- Popup -->
+<div class=`
+			popup
+			hidden inset-0 bg-black/20 backdrop-blur-sm
+			flex items-center justify-center lg:p-6
+		`>
+	<div class=`
+				content
+				absolute bottom-0 lg:bottom-auto w-full max-w-xl
+				translate-y-96 
+				duration-300
+				lg:w-2/3
+				bg-white p-6 pb-12 lg:p-12
+				rounded-t
+				flex flex-col gap-6
+			`>
+		<h3>
+			Moneypool
+		</h3>
+
+		<p class="text-sm">
+			Puedes donar con tu tarjeta bancaria directamente, a través de Moneypool.
+		</p>
+
+		<a href="https://www.moneypool.mx/p/IeBnElA" target="_blank">
+			<button class="border-2 border-solid border-black">
+				Ir a Moneypool
+			</button>
+		</a>
+
+		<h3>Transferencia bancaria</h3>
+
+		<p class="text-sm">
+			Puedes depositarme a mi cuenta personal. En la descripción de la transferencia, pon tu nombre y el texto 'SEEK' para poder agradecerte.
+		</p>
+
+		<p>CLABE: <span class="code">012 180 01525621081 9</span></p>
+		<CopyButton text="Copiar la CLABE" value="012180015256210819" />
+	</div>
+</div>
+
+<script>
+	const popup = document.querySelector('.popup');
+	const content = popup?.querySelector('.content');
+	const html = document.querySelector('html');
+
+	const togglePopup = () => {
+		if (!popup || !content) {
+			return;
+		}
+
+		if (popup.classList.contains('hidden')) { // Is closed, open
+			html?.classList.add('overflow-hidden');
+			popup.classList.replace('hidden', 'absolute');
+			setTimeout(() => {
+				content.classList.replace('translate-y-96', 'translate-y-0');
+			}, 0)
+		} else { // Is open, close
+			html?.classList.remove('overflow-hidden');
+			content.classList.replace('translate-y-0', 'translate-y-96');
+			setTimeout(() => {
+				popup.classList.replace('absolute', 'hidden');
+			}, 200);
+		}
+	}
+
+	const ctaButton = document.getElementById('ctaButton');
+	ctaButton?.addEventListener('click', togglePopup);
+	popup?.addEventListener('click', (event) => {
+		if (event.target && (event.target as HTMLElement).classList.contains('popup')) {
+			togglePopup();
+		} else {
+			event.stopPropagation();
+		}
+	})
+</script>
+</body>
 </html>

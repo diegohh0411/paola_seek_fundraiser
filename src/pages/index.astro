@@ -5,22 +5,28 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { Image } from 'astro:assets';
 import profilePicture from '../images/retrato_retiro_the_fathers_house.png';
 import CopyButton from "../components/CopyButton.astro";
+import Cont from "../components/Container.astro";
+import Carousel from "../components/Carousel.astro";
 
+const images_seek24 = Array.from(await Astro.glob('../images/seek24/*.{jpg, jpeg, png}')).map(i => i.default);
+const images_semestre = Array.from(await Astro.glob('../images/semestre/*.{jpg,jpeg,png}')).map(i => i.default);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
 	<body class=`
-		flex flex-col gap-6
-		bg-gray-100 p-12
+		flex flex-col gap-12
+		bg-white p-6 lg:p-12
+		max-w-4xl mx-auto
+		pb-24
 	`>
-		<div class=`flex flex-col lg:flex-row gap-12`>
+		<div class=`flex flex-col lg:flex-row gap-6 w-full`>
 			<Image src={profilePicture} alt="Profile photo" class=`
-				w-full lg:w-96
-				aspect-square object-cover object-bottom lg:aspect-auto
+				w-full lg:w-64
+				aspect-square lg:aspect-auto object-cover object-bottom
 			`/>
 
 			<div class=`flex flex-col gap-6`>
@@ -29,10 +35,44 @@ import CopyButton from "../components/CopyButton.astro";
 				<p>Un universitario católico de 20 años que necesita tu ayuda para vivir SEEK 2025.</p>
 
 				<button id="ctaButton" class=`p-6 bg-blue-600 text-white`>
-					<p>Donar</p>
+					Donar
 				</button>
 			</div>
 		</div>
+
+		<Cont asCallout={true}>
+			<h3>¿Qué es SEEK?</h3>
+			<p>
+				<a href="https://seek.focus.org/" target="_blank">SEEK</a> es la conferencia anual que organiza <a href="https://focus.org/" target="_blank">FOCUS</a> todos los años para reunir a miles de universitarios católicos durante una semana.
+			</p>
+		</Cont>
+
+		<Cont>
+			<h3>SEEK 2024</h3>
+
+			<p>
+				Esto es un poco de lo que vivimos el año pasado en SEEK 2024.
+			</p>
+
+			<Carousel images={images_seek24} />
+		</Cont>
+
+		<Cont>
+			<h3>Frutos del año pasado</h3>
+
+			<p>
+				Gracias a la manera en que Dios obró en mi corazón el año pasado durante SEEK 2024, pude recibir la gracia de:
+			</p>
+
+			<ul class="-mt-3">
+				<li>llevar un proceso de discernimiento vocacional</li>
+				<li>ser Director de Imagen para el grupo estudiantil de FOCUS en el Tecnológico de Monterrey</li>
+				<li>participar de un grupo de estudio bíblico y un grupo de discipulado</li>
+				<li>dirigir un grupo de estudio bíblico</li>
+			</ul>
+
+			<Carousel images={images_semestre} />
+		</Cont>
 
 		<!-- Popup -->
 		<div class=`
@@ -60,7 +100,7 @@ import CopyButton from "../components/CopyButton.astro";
 
 				<a href="https://www.moneypool.mx/p/IeBnElA" target="_blank">
 					<button class="border-2 border-solid border-black">
-						<p>Ir a Moneypool</p>
+						Ir a Moneypool
 					</button>
 				</a>
 
@@ -78,18 +118,21 @@ import CopyButton from "../components/CopyButton.astro";
 		<script>
 			const popup = document.querySelector('.popup');
 			const content = popup?.querySelector('.content');
+			const html = document.querySelector('html');
 
 			const togglePopup = () => {
 				if (!popup || !content) {
 					return;
 				}
 
-				if (popup.classList.contains('hidden')) {
+				if (popup.classList.contains('hidden')) { // Is closed, open
+					html?.classList.add('overflow-hidden');
 					popup.classList.replace('hidden', 'absolute');
 					setTimeout(() => {
 						content.classList.replace('translate-y-96', 'translate-y-0');
 					}, 0)
-				} else {
+				} else { // Is open, close
+					html?.classList.remove('overflow-hidden');
 					content.classList.replace('translate-y-0', 'translate-y-96');
 					setTimeout(() => {
 						popup.classList.replace('absolute', 'hidden');

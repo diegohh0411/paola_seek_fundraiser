@@ -1,0 +1,10 @@
+---
+interface Props {
+    asCallout?: boolean,
+}
+const { asCallout = false } = Astro.props;
+---
+
+<div class=`flex flex-col gap-6 w-full text-justify ${ asCallout && 'bg-gray-100 p-6 rounded' }`>
+    <slot />
+</div>

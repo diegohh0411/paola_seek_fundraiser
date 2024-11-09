@@ -7,25 +7,24 @@ const { text, value } = Astro.props;
 const uuid = crypto.randomUUID();
 ---
 <button id={uuid} class="border-2 border-solid border-black">
-    <p>{ text }</p>
+    { text }
 </button>
 
 <script define:vars={{ uuid, text, value }}>
     const button = document.getElementById(uuid);
-    const p = button.querySelector('p');
 
     button.addEventListener("click", async () => {
         try {
             await navigator.clipboard.writeText(value);
             button.classList.replace('border-black', 'border-green-500');
-            p.innerText = '¡Copiado con éxito!';
+            button.innerText = '¡Copiado con éxito!';
 
             setTimeout(() => {
-                p.innerText = text;
+                button.innerText = text;
                 button.classList.replace('border-green-500', 'border-black');
             }, 3000)
         } catch (err) {
-            p.innerText = 'No pudimos copiar la CLABE :('
+            button.innerText = 'No pudimos copiar la CLABE :('
             button.classList.add('border-red-500');
         }
     })

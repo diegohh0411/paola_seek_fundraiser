@@ -1,0 +1,18 @@
+---
+import type { ImageMetadata } from "astro";
+import {Image} from "astro:assets";
+
+interface Props {
+    images: ImageMetadata[];
+}
+
+const { images } = Astro.props;
+---
+<div class=`
+    flex gap-6 flex-nowrap overflow-x-auto
+    -mx-6 lg:mx-0 px-6 lg:px-0
+`>
+    {
+        images.map(item => <Image src={item} alt="" class="h-96 min-w-max" />)
+    }
+</div>

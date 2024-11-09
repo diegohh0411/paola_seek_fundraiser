@@ -13,15 +13,27 @@ p {
 }
 
 button {
-    @apply hover:-rotate-1 rounded shadow-sm hover:shadow-xl p-3 w-full
+    @apply hover:-rotate-1 rounded shadow-sm hover:shadow-xl p-3 w-full text-xl font-light
+}
+
+ul {
+    @apply list-disc ml-6 text-xl font-light
+}
+
+li {
+    @apply my-3
 }
 
 img {
     @apply rounded
 }
 
+a {
+    @apply underline underline-offset-2
+}
+
 body * {
-    @apply transition-all duration-300 ease-out leading-tight
+    @apply transition-all duration-300 ease-out leading-snug
 }
 
 .code {
