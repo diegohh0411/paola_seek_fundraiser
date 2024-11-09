@@ -127,7 +127,7 @@ const images_semestre = Array.from(await Astro.glob('../images/semestre/*.{jpg,j
 
 				if (popup.classList.contains('hidden')) { // Is closed, open
 					html?.classList.add('overflow-hidden');
-					popup.classList.replace('hidden', 'absolute');
+					popup.classList.replace('hidden', 'fixed');
 					setTimeout(() => {
 						content.classList.replace('translate-y-96', 'translate-y-0');
 					}, 0)
@@ -135,7 +135,7 @@ const images_semestre = Array.from(await Astro.glob('../images/semestre/*.{jpg,j
 					html?.classList.remove('overflow-hidden');
 					content.classList.replace('translate-y-0', 'translate-y-96');
 					setTimeout(() => {
-						popup.classList.replace('absolute', 'hidden');
+						popup.classList.replace('fixed', 'hidden');
 					}, 200);
 				}
 			}

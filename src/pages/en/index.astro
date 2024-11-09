@@ -95,15 +95,16 @@ const images_semestre = Array.from(await Astro.glob('../../images/semestre/*.{jp
 		</h3>
 
 		<p class="text-sm">
-			Puedes donar con tu tarjeta bancaria directamente, a través de Moneypool.
+			You can give with any debit or credit card through Moneypool.
 		</p>
 
 		<a href="https://www.moneypool.mx/p/IeBnElA" target="_blank">
 			<button class="border-2 border-solid border-black">
-				Ir a Moneypool
+				Go to Moneypool
 			</button>
 		</a>
 
+		<!--
 		<h3>Transferencia bancaria</h3>
 
 		<p class="text-sm">
@@ -112,6 +113,7 @@ const images_semestre = Array.from(await Astro.glob('../../images/semestre/*.{jp
 
 		<p>CLABE: <span class="code">012 180 01525621081 9</span></p>
 		<CopyButton text="Copiar la CLABE" value="012180015256210819" />
+		-->
 	</div>
 </div>
 
@@ -127,7 +129,7 @@ const images_semestre = Array.from(await Astro.glob('../../images/semestre/*.{jp
 
 		if (popup.classList.contains('hidden')) { // Is closed, open
 			html?.classList.add('overflow-hidden');
-			popup.classList.replace('hidden', 'absolute');
+			popup.classList.replace('hidden', 'fixed');
 			setTimeout(() => {
 				content.classList.replace('translate-y-96', 'translate-y-0');
 			}, 0)
@@ -135,7 +137,7 @@ const images_semestre = Array.from(await Astro.glob('../../images/semestre/*.{jp
 			html?.classList.remove('overflow-hidden');
 			content.classList.replace('translate-y-0', 'translate-y-96');
 			setTimeout(() => {
-				popup.classList.replace('absolute', 'hidden');
+				popup.classList.replace('fixed', 'hidden');
 			}, 200);
 		}
 	}

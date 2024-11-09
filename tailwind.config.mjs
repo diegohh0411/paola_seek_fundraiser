@@ -5,6 +5,9 @@ export default {
 		extend: {
 			fontFamily: {
 				'sans': ["Readex Pro", "sans-serif"]
+			},
+			borderRadius: {
+				DEFAULT: '0.5rem'
 			}
 		},
 	},
