@@ -7,6 +7,8 @@ import profilePicture from '../images/retrato_retiro_the_fathers_house.png';
 import CopyButton from "../components/CopyButton.astro";
 import Cont from "../components/Container.astro";
 import Carousel from "../components/Carousel.astro";
+import ExpensesDisplay from "../components/ExpensesDisplay.astro";
+import GoalDisplay from "../components/GoalDisplay.astro";
 
 const images_seek24 = Array.from(await Astro.glob('../images/seek24/*.{jpg, jpeg, png}')).map(i => i.default);
 const images_semestre = Array.from(await Astro.glob('../images/semestre/*.{jpg,jpeg,png}')).map(i => i.default);
@@ -46,6 +48,9 @@ const images_semestre = Array.from(await Astro.glob('../images/semestre/*.{jpg,j
 				<a href="https://seek.focus.org/" target="_blank">SEEK</a> es la conferencia anual que organiza <a href="https://focus.org/" target="_blank">FOCUS</a> todos los años para reunir a miles de universitarios católicos durante una semana.
 			</p>
 		</Cont>
+
+		<ExpensesDisplay />
+		<GoalDisplay />
 
 		<Cont>
 			<h3>SEEK 2024</h3>

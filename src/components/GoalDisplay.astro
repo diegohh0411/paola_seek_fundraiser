@@ -1,0 +1,82 @@
+---
+import Container from "./Container.astro";
+import { getID } from "./utils";
+
+const ahorros = [4700];
+const donaciones = [3000];
+const faltante = () => {
+    return [
+        26000
+        - ahorros.reduce((prev, curr) => prev + curr, 0)
+        - donaciones.reduce((prev, curr) => prev + curr, 0)
+    ]
+};
+
+console.log(faltante())
+
+const goalData = {
+    labels: [''],
+    datasets: [
+        {
+            label: 'Ahorros personales y de trabajo',
+            backgroundColor: '#1d4ed8',
+            data: ahorros,
+        },
+        {
+            label: 'Donado',
+            backgroundColor: '#15803d',
+            data: donaciones
+        },
+        {
+            label: 'Faltante',
+            backgroundColor: '#9ca3af',
+            data: faltante()
+        }
+    ]
+}
+
+const goalConfig = JSON.stringify({
+    type: 'bar',
+    data: goalData,
+    options: {
+        animation: false,
+        indexAxis: 'y',
+        scales: {
+            x: {
+                stacked: true,
+            },
+            y: {
+                stacked: true,
+            }
+        },
+        responsive: true,
+    }
+})
+
+const uuid = '' + getID();
+---
+<expenses-display data-uuid={uuid} data-gastos={goalConfig} >
+    <Container id={uuid} asCallout={true}>
+        <h3>¿Cuánto he reunido?</h3>
+
+        <canvas class="max-h-40 w-full" id="expensesChart"></canvas>
+    </Container>
+</expenses-display>
+
+<script>
+    import { Chart, BarElement, Tooltip, Legend, BarController, LinearScale, CategoryScale } from 'chart.js';
+    Chart.register(BarElement, Tooltip, Legend, BarController, LinearScale, CategoryScale);
+
+    class ExpensesDisplay extends HTMLElement {
+        connectedCallback() {
+            const ctx = document.querySelector(`#${this.dataset.uuid} #gastosChart`) as HTMLCanvasElement;
+            const config = JSON.parse(this.dataset.gastos as string);
+
+            if (ctx) {
+                new Chart(ctx, config);
+            }
+        }
+    }
+
+    customElements.define('expenses-display', ExpensesDisplay);
+</script>

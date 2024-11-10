@@ -1,0 +1,74 @@
+---
+import Container from "./Container.astro";
+import { getID } from "./utils";
+
+const expensesData = {
+    labels: [''],
+    datasets: [
+        {
+            label: 'Transporte',
+            backgroundColor: '#1d4ed8',
+            data: [14000],
+        },
+        {
+            label: 'Boleto conferencia',
+            backgroundColor: '#15803d',
+            data: [6500]
+        },
+        {
+            label: 'Comida',
+            backgroundColor: '#ca8a04',
+            data: [6000]
+        }
+    ]
+}
+
+const expensesConfig = JSON.stringify({
+    type: 'bar',
+    data: expensesData,
+    options: {
+        animation: false,
+        indexAxis: 'y',
+        scales: {
+            x: {
+                stacked: true
+            },
+            y: {
+                stacked: true
+            }
+        },
+        responsive: true
+    }
+})
+
+const uuid = '' + getID();
+---
+<expenses-display data-uuid={uuid} data-gastos={expensesConfig} >
+    <Container id={uuid} asCallout={true}>
+        <h3>¿Cuánto necesito?</h3>
+
+        <p>
+            Necesito $26,000 MXN para vivir SEEK25 en Salt Lake City. Los gastos se distribuyen de la siguiente manera.
+        </p>
+
+        <canvas class="max-h-40 w-full" id="expensesChart"></canvas>
+    </Container>
+</expenses-display>
+
+<script>
+    import { Chart, BarElement, Tooltip, Legend, BarController, LinearScale, CategoryScale } from 'chart.js';
+    Chart.register(BarElement, Tooltip, Legend, BarController, LinearScale, CategoryScale);
+
+    class ExpensesDisplay extends HTMLElement {
+        connectedCallback() {
+            const ctx = document.querySelector(`#${this.dataset.uuid} #expensesChart`) as HTMLCanvasElement;
+            const config = JSON.parse(this.dataset.gastos as string);
+
+            if (ctx) {
+                new Chart(ctx, config);
+            }
+        }
+    }
+
+    customElements.define('expenses-display', ExpensesDisplay);
+</script>
