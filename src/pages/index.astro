@@ -49,8 +49,8 @@ const images_semestre = Array.from(await Astro.glob('../images/semestre/*.{jpg,j
 			</p>
 		</Cont>
 
-		<ExpensesDisplay />
-		<GoalDisplay />
+		<ExpensesDisplay client:load />
+		<GoalDisplay client:load />
 
 		<Cont>
 			<h3>SEEK 2024</h3>
