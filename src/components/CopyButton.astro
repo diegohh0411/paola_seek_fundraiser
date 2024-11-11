@@ -10,7 +10,7 @@ const uuid = crypto.randomUUID();
     { text }
 </button>
 
-<script define:vars={{ uuid, text, value }}>
+<script define:vars={{ uuid, text, value }} is:inline>
     const button = document.getElementById(uuid);
 
     button.addEventListener("click", async () => {

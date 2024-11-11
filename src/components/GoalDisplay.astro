@@ -1,82 +1,58 @@
 ---
 import Container from "./Container.astro";
-import { getID } from "./utils";
+import { formatter, getID, sum } from "./utils";
+import { totalExpenses } from './ExpensesDisplay.astro';
+import L from "./Link.astro";
 
-const ahorros = [4700];
-const donaciones = [3000];
 const faltante = () => {
-    return [
-        26000
-        - ahorros.reduce((prev, curr) => prev + curr, 0)
-        - donaciones.reduce((prev, curr) => prev + curr, 0)
-    ]
+    return totalExpenses - sum(raised.map(i => sum(i.data)));
 };
 
-console.log(faltante())
-
-const goalData = {
-    labels: [''],
-    datasets: [
-        {
-            label: 'Ahorros personales y de trabajo',
-            backgroundColor: '#1d4ed8',
-            data: ahorros,
-        },
-        {
-            label: 'Donado',
-            backgroundColor: '#15803d',
-            data: donaciones
-        },
-        {
-            label: 'Faltante',
-            backgroundColor: '#9ca3af',
-            data: faltante()
-        }
-    ]
-}
-
-const goalConfig = JSON.stringify({
-    type: 'bar',
-    data: goalData,
-    options: {
-        animation: false,
-        indexAxis: 'y',
-        scales: {
-            x: {
-                stacked: true,
-            },
-            y: {
-                stacked: true,
-            }
-        },
-        responsive: true,
-    }
+const raised: { label: string, color: string, data: number[]}[] = [
+    {
+        label: 'Ahorros',
+        color: 'bg-blue-700',
+        data: [4700],
+    },
+    {
+        label: 'Beca',
+        color: 'bg-fuchsia-700',
+        data: [3000]
+    },
+]
+raised.push({
+    label: 'Faltante',
+    color: 'bg-gray-500',
+    data: [faltante()]
 })
+
 
 const uuid = '' + getID();
 ---
-<expenses-display data-uuid={uuid} data-gastos={goalConfig} >
-    <Container id={uuid} asCallout={true}>
-        <h3>¿Cuánto he reunido?</h3>
+<Container id={uuid} asCallout={true}>
+    <h3>¿Cuánto he reunido?</h3>
 
-        <canvas class="max-h-40 w-full" id="expensesChart"></canvas>
-    </Container>
-</expenses-display>
+    <p>
+        Entre trabajo, ahorros personales, una beca otorgada directamente por <L href="https://focus.org/">FOCUS Catholic</L> y donaciones de mis amigos, he logrado recaudar lo siguiente:
+    </p>
 
-<script>
-    import { Chart, BarElement, Tooltip, Legend, BarController, LinearScale, CategoryScale } from 'chart.js';
-    Chart.register(BarElement, Tooltip, Legend, BarController, LinearScale, CategoryScale);
+    <div class="flex gap-2 w-full">
+        {
+            raised.map((rai, index) => {
+                return <div class="flex flex-col gap-2 items-center justify-end" style={`width: ${ sum(rai.data) / totalExpenses * 100 }%`}>
+                    <p class="text-sm text-center">{ rai.label }</p>
 
-    class ExpensesDisplay extends HTMLElement {
-        connectedCallback() {
-            const ctx = document.querySelector(`#${this.dataset.uuid} #gastosChart`) as HTMLCanvasElement;
-            const config = JSON.parse(this.dataset.gastos as string);
+                    <div class:list={[
+                        "h-2 w-full",
+                        rai.color,
+                        index == 0 ? 'rounded-l-full' : index == raised.length - 1 ? 'rounded-r-full' : ''
+                    ]}></div>
 
-            if (ctx) {
-                new Chart(ctx, config);
-            }
+                    <p class="text-xs text-center">
+                        { formatter.format(sum(rai.data)) }
+                    </p>
+                </div>
+            })
         }
-    }
-
-    customElements.define('expenses-display', ExpensesDisplay);
-</script>
+    </div>
+</Container>

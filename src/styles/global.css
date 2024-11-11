@@ -28,10 +28,6 @@ img {
     @apply rounded
 }
 
-a {
-    @apply underline underline-offset-2
-}
-
 body * {
     @apply transition-all duration-300 ease-out leading-snug
 }

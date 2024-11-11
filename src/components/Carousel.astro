@@ -13,6 +13,6 @@ const { images } = Astro.props;
     -mx-6 lg:mx-0 px-6 lg:px-0
 `>
     {
-        images.map(item => <Image src={item} alt="" class="h-72 lg:h-96 min-w-max max-w-full" />)
+        images.map(item => <Image src={item} alt="" class="h-96 w-auto object-cover max-w-full" />)
     }
 </div>
