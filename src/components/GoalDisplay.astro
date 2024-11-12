@@ -3,6 +3,7 @@ import Container from "./Container.astro";
 import { formatter, getID, sum } from "./utils";
 import { totalExpenses } from './ExpensesDisplay.astro';
 import L from "./Link.astro";
+import {globalConfig} from "../customized/consts";
 
 const faltante = () => {
     return totalExpenses - sum(raised.map(i => sum(i.data)));
@@ -12,14 +13,15 @@ const raised: { label: string, color: string, data: number[]}[] = [
     {
         label: 'Ahorros',
         color: 'bg-blue-700',
-        data: [4700],
+        data: globalConfig.raised.ahorros,
     },
     {
-        label: 'Beca',
+        label: 'Donaciones',
         color: 'bg-fuchsia-700',
-        data: [3000]
+        data: globalConfig.raised.donaciones,
     },
 ]
+
 raised.push({
     label: 'Faltante',
     color: 'bg-gray-500',
@@ -36,7 +38,7 @@ const uuid = '' + getID();
         Entre trabajo, ahorros personales, una beca otorgada directamente por <L href="https://focus.org/">FOCUS Catholic</L> y donaciones de mis amigos, he logrado recaudar lo siguiente:
     </p>
 
-    <div class="flex gap-2 w-full">
+    <div class="flex gap-8 w-full">
         {
             raised.map((rai, index) => {
                 return <div class="flex flex-col gap-2 items-center justify-end" style={`width: ${ sum(rai.data) / totalExpenses * 100 }%`}>

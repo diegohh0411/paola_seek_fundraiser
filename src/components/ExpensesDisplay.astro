@@ -1,27 +1,28 @@
 ---
 import Container from "./Container.astro";
 import {formatter, getID, sum} from "./utils";
+import {globalConfig} from "../customized/consts";
 
 export const expenses: { label: string, color: string, data: number[]}[] = [
     {
         label: 'Transporte',
         color: 'bg-zinc-700',
-        data: [14000],
+        data: globalConfig.expenses.transporte,
     },
     {
         label: 'Boleto SEEK',
         color: 'bg-purple-700',
-        data: [6500]
+        data: globalConfig.expenses.boleto,
     },
     {
         label: 'Hospedaje',
         color: 'bg-sky-700',
-        data: [4500],
+        data: globalConfig.expenses.hospedaje,
     },
     {
         label: 'Comida',
         color: 'bg-green-700',
-        data: [4500]
+        data: globalConfig.expenses.comida,
     }
 ]
 
@@ -36,7 +37,7 @@ const uuid = '' + getID();
         Este año necesito { formatter.format(totalExpenses) } MXN para vivir SEEK 2025. Los gastos se distribuyen de la siguiente manera:
     </p>
 
-    <div class="flex gap-2 w-full">
+    <div class="flex gap-8 w-full">
         {
             expenses.map((exp, index) => {
                 return <div class="flex flex-col gap-2 items-center justify-end" style={`width: ${ sum(exp.data) / totalExpenses * 100 }%`}>

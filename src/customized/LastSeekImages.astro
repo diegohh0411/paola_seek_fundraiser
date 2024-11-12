@@ -1,0 +1,5 @@
+---
+import Carousel from '../components/Carousel.astro';
+const images = Array.from((await Astro.glob('../images/seek24/*.{jpg,jpeg,png}')) ?? []).map(i => i.default);
+---
+<Carousel images={images} />
