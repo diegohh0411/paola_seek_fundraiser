@@ -1,9 +1,17 @@
 ---
+export const prerender = false;
+
 import Container from "./Container.astro";
 import { formatter, getID, sum } from "./utils";
 import { totalExpenses } from './ExpensesDisplay.astro';
 import L from "./Link.astro";
-import {globalConfig} from "../customized/consts";
+
+import { sql } from '../lib/neon.ts';
+
+const raised_query = await sql`SELECT * FROM raised WHERE username = 'diego';`;
+const ahorros = raised_query.filter(r => r.type === 'ahorro').map(r => r.amount);
+const donaciones = raised_query.filter(r => r.type === 'donacion').map(r => r.amount);
+
 
 const faltante = () => {
     return totalExpenses - sum(raised.map(i => sum(i.data)));
@@ -13,12 +21,12 @@ const raised: { label: string, color: string, data: number[]}[] = [
     {
         label: 'Ahorros',
         color: 'bg-blue-700',
-        data: globalConfig.raised.ahorros,
+        data: ahorros,
     },
     {
         label: 'Donaciones',
         color: 'bg-fuchsia-700',
-        data: globalConfig.raised.donaciones,
+        data: donaciones,
     },
 ]
 

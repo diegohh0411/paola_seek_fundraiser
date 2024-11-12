@@ -16,11 +16,6 @@ interface config {
         comida: number[],
     },
 
-    raised: {
-        ahorros: number[],
-        donaciones: number[],
-    },
-
     prayerFormsUrl?: string,
 }
 
@@ -40,11 +35,6 @@ export const globalConfig: config = {
         boleto: [6500],
         hospedaje: [4500],
         comida: [4500],
-    },
-
-    raised: {
-        ahorros: [4700],
-        donaciones: [3000],
     },
 
     prayerFormsUrl: "https://diego-hdz.notion.site/13be954db47680a4a3dfc1526aceb634?pvs=105",
