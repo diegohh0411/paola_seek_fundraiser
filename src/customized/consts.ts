@@ -19,6 +19,8 @@ interface config {
     prayerFormsUrl?: string,
 }
 
+export const db_username = 'diego';
+
 export const globalConfig: config = {
     personalName: 'Diego Hernández',
     title: "Hola, soy Diego Hernández",
