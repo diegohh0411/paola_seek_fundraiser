@@ -42,6 +42,6 @@ export const globalConfig: config = {
     prayerFormsUrl: "https://diego-hdz.notion.site/13be954db47680a4a3dfc1526aceb634?pvs=105",
 }
 
-export const SITE_TITLE = `${globalConfig.personalName} | SEEK 2025`;
+export const SITE_TITLE = `Dona a ${globalConfig.personalName} | SEEK 2025`;
 export const SITE_DESCRIPTION = globalConfig.subtitle;
 
