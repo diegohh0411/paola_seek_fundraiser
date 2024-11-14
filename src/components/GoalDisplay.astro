@@ -2,36 +2,9 @@
 export const prerender = false;
 
 import Container from "./Container.astro";
-import { formatter, getID, sum } from "./utils";
+import { getID } from "./utils";
 import { totalExpenses } from './ExpensesDisplay.astro';
 import L from "./Link.astro";
-import { GET } from '../pages/api/raised';
-
-const raisedDataOnDB = await (await GET(Astro)).json();
-
-const faltante = () => {
-    return totalExpenses - sum(raised.map(i => sum(i.data)));
-};
-
-const raised: { label: string, color: string, data: number[]}[] = [
-    {
-        label: 'Ahorros',
-        color: 'bg-blue-700',
-        data: raisedDataOnDB.ahorros,
-    },
-    {
-        label: 'Donaciones',
-        color: 'bg-fuchsia-700',
-        data: raisedDataOnDB.donaciones,
-    },
-]
-
-raised.push({
-    label: 'Faltante',
-    color: 'bg-gray-500',
-    data: [faltante()]
-})
-
 
 const uuid = '' + getID();
 ---
@@ -42,23 +15,80 @@ const uuid = '' + getID();
         Entre trabajo, ahorros personales, una beca otorgada directamente por <L href="https://focus.org/">FOCUS Catholic</L> y donaciones de mis amigos, he logrado recaudar lo siguiente:
     </p>
 
-    <div class="flex gap-8 w-full">
-        {
-            raised.map((rai, index) => {
-                return <div class="flex flex-col gap-2 items-center justify-end" style={`width: ${ sum(rai.data) / totalExpenses * 100 }%`}>
-                    <p class="text-sm text-center">{ rai.label }</p>
-
-                    <div class:list={[
-                        "h-2 w-full",
-                        rai.color,
-                        index == 0 ? 'rounded-l-full' : index == raised.length - 1 ? 'rounded-r-full' : ''
-                    ]}></div>
-
-                    <p class="text-xs text-center">
-                        { formatter.format(sum(rai.data)) }
-                    </p>
-                </div>
-            })
-        }
-    </div>
+    <div id="bar_container" class="flex gap-4 w-full"></div>
 </Container>
+
+<script define:vars={{ uuid, totalExpenses }} is:inline type="module">
+    const response = await fetch('/api/raised');
+    const db_data = await response.json();
+
+    const sum = (arr) => {
+        return arr.reduce((prev, curr) => prev + curr, 0);
+    }
+
+    const formatter = new Intl.NumberFormat('es-MX', {
+        style: 'currency',
+        currency: 'MXN',
+
+        // These options can be used to round to whole numbers.
+        trailingZeroDisplay: 'stripIfInteger'   // This is probably what most people
+                                                // want. It will only stop printing
+                                                // the fraction when the input
+                                                // amount is a round number (int)
+                                                // already. If that's not what you
+                                                // need, have a look at the options
+                                                // below.
+        //minimumFractionDigits: 0, // This suffices for whole numbers, but will
+        // print 2500.10 as $2,500.1
+        //maximumFractionDigits: 0, // Causes 2500.99 to be printed as $2,501
+    });
+
+    const raised = [
+        {
+            label: 'Ahorros',
+            color: 'bg-blue-700',
+            data: db_data.ahorros,
+        },
+        {
+            label: 'Donaciones',
+            color: 'bg-fuchsia-700',
+            data: db_data.donaciones,
+        },
+    ]
+
+    const faltante = () => {
+        return totalExpenses - sum(raised.map(i => sum(i.data)));
+    };
+
+    raised.push({
+        label: 'Faltante',
+        color: 'bg-gray-500',
+        data: [faltante()]
+    })
+
+    const container = document.querySelector(`#${uuid} #bar_container`);
+    console.debug({ container })
+    if (container) {
+        raised.forEach(category => {
+            const category_element = document.createElement('div');
+            ["flex", "flex-col", "gap-2", "items-center", "justify-end"].forEach(c => category_element.classList.add(c));
+            category_element.setAttribute('style', `width: ${sum(category.data) / totalExpenses * 100}%`)
+
+            const label = document.createElement('p');
+            ["text-xs", "text-center"].forEach(c => label.classList.add(c));
+            label.innerText = category.label;
+            category_element.appendChild(label);
+
+            const bar = document.createElement('div');
+            ["h-2", "w-full", "rounded-full", category.color].forEach(c => bar.classList.add(c));
+            category_element.append(bar);
+
+            const amount = document.createElement('p');
+            ["text-xs", "text-center"].forEach(c => amount.classList.add(c));
+            amount.innerText = formatter.format(sum(category.data));
+            category_element.append(amount);
+
+            container.append(category_element);
+        })
+    }
+</script>
