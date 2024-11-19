@@ -3,7 +3,7 @@ import BaseHead from '../components/BaseHead.astro';
 import {SITE_TITLE, SITE_DESCRIPTION, globalConfig} from '../customized/consts';
 
 import { Image } from 'astro:assets';
-import profilePicture from '../images/retrato_retiro_the_fathers_house.png';
+import profilePicture from '../images/foto_Paola_seek.jpg';
 import CopyButton from "../components/CopyButton.astro";
 import Cont from "../components/Container.astro";
 import ExpensesDisplay from "../components/ExpensesDisplay.astro";
@@ -29,7 +29,9 @@ import { Content as LastSeek } from '../customized/last_seek.mdx';
 			<Image src={profilePicture} alt="Profile photo" class=`
 				w-full md:w-64
 				aspect-square md:aspect-auto object-cover object-bottom
-			`/>
+			`
+				style="object-position: 100% 80%;"
+			/>
 
 			<div class=`flex flex-col gap-6`>
 				<h1>{ globalConfig.title }</h1>

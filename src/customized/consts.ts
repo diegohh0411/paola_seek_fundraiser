@@ -19,27 +19,27 @@ interface config {
     prayerFormsUrl?: string,
 }
 
-export const db_username = 'diego';
+export const db_username = 'paola';
 
 export const globalConfig: config = {
-    personalName: 'Diego Hernández',
-    title: "Hola, soy Diego Hernández",
-    subtitle: "Un universitario católico de 20 años que necesita tu ayuda para vivir SEEK 2025.",
-    moneypool: "https://www.moneypool.mx/p/IeBnElA",
+    personalName: 'Paola Espejo',
+    title: "Hola! soy Paola Espejo",
+    subtitle: "Y soy una estudiante católica de 20 años con muchas ganas de ir a SEEK 2025 y necesito tu ayuda para hacerlo realidad. ",
+    moneypool: "https://www.moneypool.mx/p/YSlyPsc",
 
     transfer: {
-        bank: "BBVA",
-        clabe: "012180015256210819",
+        bank: "Nu",
+        clabe: "638180010116050598",
     },
 
     expenses: {
         transporte: [14000],
-        boleto: [6500],
+        boleto: [7500],
         hospedaje: [4500],
         comida: [4500],
     },
 
-    prayerFormsUrl: "https://diego-hdz.notion.site/13be954db47680a4a3dfc1526aceb634?pvs=105",
+    prayerFormsUrl: 'https://vanilla-fine-4e8.notion.site/143cbd6bf2a3806baf69e0a6269a35da?pvs=105'
 }
 
 export const SITE_TITLE = `Dona a ${globalConfig.personalName} | SEEK 2025`;
